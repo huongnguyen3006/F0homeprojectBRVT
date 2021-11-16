@@ -1,0 +1,17 @@
+version: '3'
+
+services: 
+    db:
+        #platform: linux/x86_64
+        image: mysql:8
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        cap_add:
+            - SYS_NICE
+        environment:
+            MYSQL_ROOT_PASSWORD: f0homebrvt
+            MYSQL_DATABASE: f0homebrvt
+            MYSQL_USER: f0homebrvt
+            MYSQL_PASSWORD: f0homebrvt
+        ports: 
+            - 3308:3306
