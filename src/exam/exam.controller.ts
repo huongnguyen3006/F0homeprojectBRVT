@@ -3,7 +3,7 @@ import { ExamService } from './exam.service'
 import { Exam } from './exam.entity';
 
 
-@Controller('Exams')
+@Controller('exams')
 export class ExamController {
   constructor(private readonly examService: ExamService) {
 
@@ -19,9 +19,9 @@ export class ExamController {
     return this.examService.findAll()
   }
 
-  @Get(':Id')
+  @Get(':id')
   get(@Param() params) {
-    return this.examService.findOne(params.Id);
+    return this.examService.findOne(params.id);
   }
 
   @Post()
@@ -29,7 +29,7 @@ export class ExamController {
     return this.examService.create(exam);
   }
 
-  @Post('/Batch')
+  @Post('/batch')
   createBatch(@Body() exams: Exam[]) {
 
     console.log(exams)
@@ -45,9 +45,9 @@ export class ExamController {
     return this.examService.update(exam);
   }
 
-  @Delete(':Id')
+  @Delete(':id')
   deleteUser(@Param() params) {
-    return this.examService.delete(params.Id);
+    return this.examService.delete(params.id);
   }
 
 

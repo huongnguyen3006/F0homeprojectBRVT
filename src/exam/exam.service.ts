@@ -13,17 +13,17 @@ export class ExamService {
     async findAll(): Promise <(Exam) []> {
         return await this.examRepo.find()
     };
-    async findOne (Id: number): Promise<(Exam)>{
-        return await this.examRepo.findOne(Id)
+    async findOne (id: number): Promise<(Exam)>{
+        return await this.examRepo.findOne(id)
     };
     async create (exam: Exam): Promise <(Exam)> {
         return await this.examRepo.save(exam)
     }
     async update (exam: Exam): Promise <UpdateResult> {
-        return await this.examRepo.update(exam.Id, exam)
+        return await this.examRepo.update(exam.id, exam)
     }
-    async delete (Id): Promise <DeleteResult> {
-        return await this.examRepo.delete(Id)
+    async delete (id): Promise <DeleteResult> {
+        return await this.examRepo.delete(id)
 }
 }
 

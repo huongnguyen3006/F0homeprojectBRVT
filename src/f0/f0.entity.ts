@@ -6,32 +6,32 @@ import { Transform } from 'class-transformer';
 @Entity('f0s')
 export class F0 {
   @PrimaryGeneratedColumn()
-  Id: number;
+  id: number;
 
   @Column({ type: 'text' })
-  Name: string;
+  name: string;
 
   @Column() 
-  Age: number;
+  age: number;
 
   @Column({ type: 'text' })
-  Add: string;
+  add: string;
 
   @Column()
-  Tel: number;
+  tel: number;
 
   @Column()
-  Zalo: number;
+  zalo: number;
 
 
   @Column()
-  Don: string;
+  don: string;
 
   @Column('text')
-  Symstoms: string;
+  symstoms_st: string;
 
   @Column()
-  DoctorId: number;
+  treated_by: number;
 
 //   @ManyToOne(type => F0, F0 => F0.Id,  {eager: false})
 //   @JoinColumn({name: "F0_Id", referencedColumnName: "Id"})   
@@ -43,15 +43,15 @@ export class F0 {
 //   Doctor: Doctor[];
 
   @Column()
-  Dop: string;
+  dop: string;
 
   @Column()
-  Note: string;
+  note: string;
 
   @Column()
-  UserId: string;
+  treatment: string;
 
   @Column()
-  Exams: string;
+  exams: string;
 }
 

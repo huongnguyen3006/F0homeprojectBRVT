@@ -13,17 +13,17 @@ export class VolunteerService {
     async findAll(): Promise <Volunteer []> {
         return await this.volunteerRepo.find()
     };
-    async findOne (Id: number): Promise<Volunteer>{
-        return await this.volunteerRepo.findOne(Id)
+    async findOne (id: number): Promise<Volunteer>{
+        return await this.volunteerRepo.findOne(id)
     };
     async create (volunteer: Volunteer): Promise <Volunteer> {
         return await this.volunteerRepo.save(volunteer)
     }
     async update (volunteer: Volunteer): Promise <UpdateResult> {
-        return await this.volunteerRepo.update(volunteer.Id, volunteer)
+        return await this.volunteerRepo.update(volunteer.id, volunteer)
     }
-    async delete (Id): Promise <DeleteResult> {
-        return await this.volunteerRepo.delete(Id)
+    async delete (id): Promise <DeleteResult> {
+        return await this.volunteerRepo.delete(id)
 }
 }
 

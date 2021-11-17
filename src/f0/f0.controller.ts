@@ -3,7 +3,7 @@ import { F0Service } from './f0.service'
 import { F0 } from './f0.entity'
 
 
-@Controller('F0s')
+@Controller('f0s')
 export class F0Controller {
   constructor(private readonly f0Service: F0Service) {
 
@@ -19,9 +19,9 @@ export class F0Controller {
     return this.f0Service.findAll()
   }
 
-  @Get(':Id')
+  @Get(':id')
   get(@Param() params) {
-    return this.f0Service.findOne(params.Id);
+    return this.f0Service.findOne(params.id);
   }
 
   @Post()
@@ -34,9 +34,9 @@ export class F0Controller {
     return this.f0Service.update(f0);
   }
 
-  @Delete(':Id')
+  @Delete(':id')
   deleteUser(@Param() params) {
-    return this.f0Service.delete(params.Id);
+    return this.f0Service.delete(params.id);
   }
 }
 

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcryptjs';
 
 
 
-@Controller('Users')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {
 
@@ -16,9 +16,9 @@ export class UserController {
     return this.userService.findAll()
   }
 
-  @Get(':Id')
+  @Get(':id')
   get(@Param() params) {
-    return this.userService.findOne(params.Id);
+    return this.userService.findOne(params.id);
   }
 
   // @Post()
@@ -31,9 +31,9 @@ export class UserController {
     return this.userService.update(lab);
   }
 
-  @Delete(':Id')
+  @Delete(':id')
   deleteUser(@Param() params) {
-    return this.userService.delete(params.Id);
+    return this.userService.delete(params.id);
   }
 
 
