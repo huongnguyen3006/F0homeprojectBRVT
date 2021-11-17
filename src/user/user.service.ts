@@ -18,8 +18,8 @@ export class UserService {
     return await this.userRepo.find();
   }
 
-  async findOne(Id: number): Promise<User> {
-    return await this.userRepo.findOne(Id)
+  async findOne(id: number): Promise<User> {
+    return await this.userRepo.findOne(id)
   }
 
 
@@ -28,11 +28,11 @@ export class UserService {
   }
 
   async update(task: User): Promise<UpdateResult> {
-    return await this.userRepo.update(task.Id, task);
+    return await this.userRepo.update(task.id, task);
   }
 
-  async delete(Id): Promise<DeleteResult> {
-    return await this.userRepo.delete(Id);
+  async delete(id): Promise<DeleteResult> {
+    return await this.userRepo.delete(id);
   }
 
   async findByEmail(user: User): Promise<User> {

@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 export class Doctor {
 
     @PrimaryGeneratedColumn()
-    Id: number;
+    id: number;
   
     // @Transform(x => new Date('dd/mm/YYYY'))
     // @Column('text')
@@ -14,22 +14,22 @@ export class Doctor {
   
 
     @Column({ type: 'text' })
-    Name: string;
+    name: string;
   
     @Column() 
-    Age: number;
+    age: number;
   
     @Column({ type: 'text' })
-    Add: string;
+    address: string;
   
     @Column()
-    Tel: number;
+    phone: number;
   
-    @Column()
-    Zalo: number;
+    // @Column()
+    // Zalo: number;
   
     @Column({ type: 'text' })
-    Avatar: string;
+    avatar: string;
   
     
   

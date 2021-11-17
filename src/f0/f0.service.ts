@@ -13,17 +13,17 @@ export class F0Service {
     async findAll(): Promise <F0 []> {
         return await this.f0Repo.find()
     };
-    async findOne (Id: number): Promise<F0>{
-        return await this.f0Repo.findOne(Id)
+    async findOne (id: number): Promise<F0>{
+        return await this.f0Repo.findOne(id)
     };
     async create (f0: F0): Promise <F0> {
         return await this.f0Repo.save(f0)
     }
     async update (f0: F0): Promise <UpdateResult> {
-        return await this.f0Repo.update(f0.Id, f0)
+        return await this.f0Repo.update(f0.id, f0)
     }
-    async delete (Id): Promise <DeleteResult> {
-        return await this.f0Repo.delete(Id)
+    async delete (id): Promise <DeleteResult> {
+        return await this.f0Repo.delete(id)
 }
 }
 

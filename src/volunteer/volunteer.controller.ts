@@ -3,7 +3,7 @@ import { VolunteerService } from './volunteer.service'
 import { Volunteer } from './volunteer.entity';
 
 
-@Controller('Volunteers')
+@Controller('volunteers')
 export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {
 
@@ -19,9 +19,9 @@ export class VolunteerController {
     return this.volunteerService.findAll()
   }
 
-  @Get(':Id')
+  @Get(':id')
   get(@Param() params) {
-    return this.volunteerService.findOne(params.Id);
+    return this.volunteerService.findOne(params.id);
   }
 
   @Post()
@@ -34,9 +34,9 @@ export class VolunteerController {
     return this.volunteerService.update(volunteer);
   }
 
-  @Delete(':Id')
+  @Delete(':id')
   deleteUser(@Param() params) {
-    return this.volunteerService.delete(params.Id);
+    return this.volunteerService.delete(params.id);
   }
 }
 

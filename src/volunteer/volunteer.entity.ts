@@ -6,29 +6,29 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 export class Volunteer{
 
     @PrimaryGeneratedColumn()
-    Id: number;
+    id: number;
   
     // @Transform(x => new Date('dd/mm/YYYY'))
     // @Column('text')
     // date: Date;
 
     @Column({ type: 'text' })
-    Name: string;
+    name: string;
   
     @Column() 
-    Age: number;
+    age: number;
   
     @Column({ type: 'text' })
-    Add: string;
+    address: string;
   
     @Column()
-    Tel: number;
+    phone: number;
   
     @Column()
-    Zalo: number;
+    email: string;
   
     @Column()
-    Avatar: string;
+    avatar: string;
   
     
   

@@ -13,17 +13,17 @@ export class DoctorService {
     async findAll(): Promise <Doctor []> {
         return await this.doctorRepo.find()
     };
-    async findOne (Id: number): Promise<Doctor>{
-        return await this.doctorRepo.findOne(Id)
+    async findOne (id: number): Promise<Doctor>{
+        return await this.doctorRepo.findOne(id)
     };
     async create (doctor: Doctor): Promise <Doctor> {
         return await this.doctorRepo.save(doctor)
     }
     async update (doctor: Doctor): Promise <UpdateResult> {
-        return await this.doctorRepo.update(doctor.Id, doctor)
+        return await this.doctorRepo.update(doctor.id, doctor)
     }
-    async delete (Id): Promise <DeleteResult> {
-        return await this.doctorRepo.delete(Id)
+    async delete (id): Promise <DeleteResult> {
+        return await this.doctorRepo.delete(id)
 }
 }
 

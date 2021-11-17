@@ -20,7 +20,7 @@ export class BasicAuthMiddleware implements NestMiddleware {
             const base64Credentials =  req.headers.authorization.split(' ')[1];
             const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
             const [email, password] = credentials.split(':');
-            const user = await this.userService.findByEmailAndPassword( {Id: -1, Email: email, Password: password});
+            const user = await this.userService.findByEmailAndPassword( {id: -1, Email: email, Password: password});
             if (!user) {
                 return res.status(401).json({ message: 'Invalid Authentication Credentials' });
             }

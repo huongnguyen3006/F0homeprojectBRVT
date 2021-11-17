@@ -6,34 +6,32 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 export class Exam {
 
     @PrimaryGeneratedColumn()
-    Id: number;
+    id: number;
    
     @Column() 
-    UserId: number; 
+    created_by: number; 
 
     @Column() 
-    F0Id: number; 
+    f0: string; 
 
     @Column()
-    Temperature: number;
+    temperature: number;
   
     @Column() 
-    Spo2: number;
+    spo2: number;
   
-    @Column({ type: 'text' })
-    F0Name: string;
   
     @Column('text')
-    Symptoms: string;
+    symptoms: string;
 
     @Column('datetime')
-    Dot: string;
+    dot: string;
   
     @Column('text')
-    Prescription: string;
+    prescription: string;
   
     @Column('text')
-    Note: string;
+    note: string;
   
     
   
