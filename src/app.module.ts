@@ -1,56 +1,59 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { getConnectionOptions, Repository } from 'typeorm';
-import { UserModule } from './user/user.module';
-import { BasicAuthMiddleware } from './user/basic.auth.middleware';
-import { UserService } from './user/user.service';
-import { F0Module } from './f0/f0.module';
 import { DoctorModule } from './doctor/doctor.module';
 import { ExamModule } from './exam/exam.module';
+import { F0Module } from './f0/f0.module';
+import { UserModule } from './user/user.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
-
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     //  TypeOrmModule.forRootAsync({
     //   useFactory: async () =>
-    //     Object.assign(await 
+    //     Object.assign(await
     //      getConnectionOptions(), {
     //       autoLoadEntities: true,
     //     }),
     //   }),
-
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3308,
-      username: 'f0homebrvt',
-      password: 'f0homebrvt',
-      database: 'f0homebrvt',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
     }),
-    UserModule, F0Module, DoctorModule, ExamModule, VolunteerModule,
-
+    TypeOrmModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('MYSQL_HOST'),
+        port: configService.get<number>('MYSQL_PORT'),
+        username: configService.get<string>('MYSQL_USERNAME'),
+        password: configService.get<string>('MYSQL_PASSWORD'),
+        database: configService.get<string>('MYSQL_DB'),
+        entities: ['dist/**/*.entity{.ts,.js}'],
+        autoLoadEntities: true,
+        synchronize: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }),
+      inject: [ConfigService],
+    }),
+    UserModule,
+    F0Module,
+    DoctorModule,
+    ExamModule,
+    VolunteerModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService ],
+  controllers: [],
+  providers: [],
 })
-
-
-
-
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(BasicAuthMiddleware)
-    .exclude(
-      'Users/Auth/(.*)',
-    )
-    .forRoutes('/');
-  }
+export class AppModule {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(BasicAuthMiddleware)
+  //     .exclude('Users/Auth/(.*)')
+  //     .forRoutes('/');
+  // }
 }
