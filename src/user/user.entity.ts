@@ -2,19 +2,33 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Transform } from 'class-transformer';
 
 @Entity('user')
-export class User{
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @Column('text') 
-  // first_name: string;
+  @Column({
+    type: 'text',
+  })
+  firstName: string;
 
-  // @Column('text') 
-  // last_name: string;
+  @Column({
+    type: 'text',
+  })
+  lastName: string;
 
-  @Column('text') 
-  Email: string;
+  @Column({
+    type: 'text',
+  })
+  email: string;
 
-  @Column('text')
-  Password: string;
+  @Column({
+    type: 'text',
+  })
+  password: string;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  active: boolean;
 }

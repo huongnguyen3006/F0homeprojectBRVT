@@ -1,106 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.entity'
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';
-import { getManager } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<User[]> {
     return await this.userRepo.find();
   }
 
   async findOne(id: number): Promise<User> {
-    return await this.userRepo.findOne(id)
+    return await this.userRepo.findOne(id);
   }
 
-
-  async create(task: User): Promise<User> {
-    return await this.userRepo.save(task)
+  async findOneOrFail(id: number): Promise<User> {
+    return await this.userRepo.findOneOrFail(id);
   }
 
-  async update(task: User): Promise<UpdateResult> {
-    return await this.userRepo.update(task.id, task);
+  async create(createUserDto: CreateUserDto) {
+    return await this.userRepo.save(createUserDto);
   }
 
-  async delete(id): Promise<DeleteResult> {
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepo.update(id, updateUserDto);
+  }
+
+  async delete(id: number) {
     return await this.userRepo.delete(id);
   }
 
-  async findByEmail(user: User): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     const dbUser = await this.userRepo.findOne({
-      where: {
-        Email: user.Email,
-      },
+      email,
     });
 
     return dbUser;
-
   }
-
-  async findByEmailAndPassword(user: User): Promise<User> {
-
-    const dbUser = await this.userRepo.findOne({
-      where: {
-        Email: user.Email
-      },
-    });
-
-    if (!dbUser) return null
-    
-    const isMatch = await bcrypt.compare( user.Password, dbUser.Password,);
-
-    if (isMatch) 
-      return dbUser
-    else
-      return null;
-
-  }
-
-  async validate(user: User): Promise<User> {
-    const dbUser = await this.userRepo.findOne({
-      where: {
-        Email: user.Email,
-      },
-    });
-
-    if (!dbUser) {
-
-      throw new NotFoundException(`User ${user.Email} not found`);
-    }
-
-    return dbUser;
-
-  }
-
-
-  async login(user: User): Promise<any | { status: number; message: string }> {
-    // const entityManager = getManager();
-    // let sql = `Select * from user where Email='${user.Email}' and Password='${user.Password}' limit 1`
-    // console.log(sql)
-    // return await entityManager.query(sql)
-
-    const dbUser = this.findByEmailAndPassword(user)
-
-
-    if (dbUser) {
-      return dbUser
-    }
-    else {
-      return { status: 400, message: "Wrong password" }
-    }
-
-
-  }
-
-
 }
-
