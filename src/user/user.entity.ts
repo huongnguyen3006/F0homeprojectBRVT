@@ -17,10 +17,10 @@ export class User {
   })
   email: string;
 
+  @Exclude({ toPlainOnly: true })
   @Column({
     type: 'text',
   })
-  @Exclude()
   password: string;
 
   @Column({

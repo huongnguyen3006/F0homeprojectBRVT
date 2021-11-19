@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-  Patch,
-} from '@nestjs/common';
-import { VolunteerService } from './volunteer.service';
-import { Volunteer } from './volunteer.entity';
-import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
+import { Volunteer } from './volunteer.entity';
+import { VolunteerService } from './volunteer.service';
 
+@ApiTags('volunteer')
 @Controller('volunteers')
 export class VolunteerController {
   constructor(private readonly volunteerService: VolunteerService) {}

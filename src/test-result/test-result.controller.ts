@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { TestResultService } from './test-result.service';
-import { CreateTestResultDto } from './dto/create-test-result.dto';
-import { UpdateTestResultDto } from './dto/update-test-result.dto';
 
+@ApiTags('test-results')
 @Controller('test-results')
 export class TestResultController {
   constructor(private readonly testResultService: TestResultService) {}

@@ -6,11 +6,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { bcryptHash } from 'src/utils/bcrypt-util';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './user.entity';
 
 @Injectable()
@@ -38,7 +36,11 @@ export class UserService {
     const hash = await bcryptHash(password);
     createUserDto.password = hash;
     const active = role === 'admin';
-    return await this.userRepo.save({ ...createUserDto, role, active });
+    return await this.userRepo.save({
+      ...createUserDto,
+      role,
+      active,
+    });
   }
 
   async checkUserEmailUnique(email: string) {

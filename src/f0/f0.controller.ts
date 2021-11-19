@@ -1,19 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-  Patch,
-} from '@nestjs/common';
-import { F0Service } from './f0.service';
-import { F0 } from './f0.entity';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateF0Dto } from './dto/create-f0.dto';
-import { UpdateF0Dto } from './dto/update-f0.dto';
+import { F0Service } from './f0.service';
 
+@ApiTags('f0')
 @Controller('f0s')
 export class F0Controller {
   constructor(private readonly f0Service: F0Service) {}

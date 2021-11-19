@@ -8,11 +8,13 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import RequestWithUser from 'src/auth/interfaces/request-with-user';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -40,8 +42,8 @@ export class UserController {
     return this.userService.create(createUserDto, 'admin');
   }
 
-  @Delete()
-  async deleteAll() {
-    return this.userService.deleteAll();
-  }
+  // @Delete()
+  // async deleteAll() {
+  //   return this.userService.deleteAll();
+  // }
 }
