@@ -1,6 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { bcryptHash } from 'src/utils/bcrypt-util';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -43,5 +49,27 @@ export class UserService {
     });
 
     return dbUser;
+  }
+
+  async activateUserByEmail(email: string) {
+    const user = await this.getNonActiveUserByEmail(email);
+    user.active = true;
+    await this.userRepo.save(user);
+    return HttpStatus.OK;
+  }
+
+  async getNonActiveUserByEmail(email: string) {
+    const user = await this.findByEmail(email);
+    if (!user) throw new NotFoundException('User not found!');
+    if (user.active)
+      throw new NotAcceptableException('Email is already verified!');
+    return user;
+  }
+
+  async updatePassword(email: string, password: string) {
+    const user = await this.findByEmail(email);
+    if (!user) throw new NotFoundException('Recruiter not found!');
+    user.password = await bcryptHash(password);
+    await this.userRepo.save(user);
   }
 }
