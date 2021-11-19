@@ -7,8 +7,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-export class CreateF0Dto {
+export class CreateVolunteerDto extends CreateUserDto {
   @ApiProperty()
   @IsString()
   @MinLength(1)
@@ -35,34 +36,4 @@ export class CreateF0Dto {
   @IsOptional()
   @MaxLength(500)
   avatar?: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(100)
-  dop: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(100)
-  don: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(200)
-  symptoms: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(500)
-  note: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(100)
-  treatment: string;
 }

@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpStatus,
   Injectable,
   NotAcceptableException,
@@ -10,7 +11,7 @@ import { bcryptHash } from 'src/utils/bcrypt-util';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
+import { User, UserRole } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -31,16 +32,18 @@ export class UserService {
     return await this.userRepo.findOneOrFail(id);
   }
 
-  async create(createUserDto: CreateUserDto) {
-    return await this.userRepo.save(createUserDto);
+  async create(createUserDto: CreateUserDto, role: UserRole) {
+    const { password, email } = createUserDto;
+    await this.checkUserEmailUnique(email);
+    const hash = await bcryptHash(password);
+    createUserDto.password = hash;
+    return await this.userRepo.save({ ...createUserDto, role });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.userRepo.update(id, updateUserDto);
-  }
-
-  async delete(id: number) {
-    return await this.userRepo.delete(id);
+  async checkUserEmailUnique(email: string) {
+    const dbUser = await this.findByEmail(email);
+    if (dbUser)
+      return new ConflictException('Email already exists').getResponse();
   }
 
   async findByEmail(email: string): Promise<User> {

@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Transform } from 'class-transformer';
 
 const userRoles = ['f0', 'doctor', 'volunteer', 'admin'];
-type UserRole = 'f0' | 'doctor' | 'volunteer' | 'admin';
+export type UserRole = 'f0' | 'doctor' | 'volunteer' | 'admin';
 
 @Entity('user')
 export class User {
