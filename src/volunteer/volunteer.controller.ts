@@ -40,4 +40,9 @@ export class VolunteerController {
   // ) {
   //   return this.volunteerService.update(id, updateVolunteerDto);
   // }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.volunteerService.delete(id);
+  }
 }

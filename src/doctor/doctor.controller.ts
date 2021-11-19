@@ -1,15 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
-import { Doctor } from './doctor.entity';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 
 @Controller('doctors')
@@ -29,5 +19,10 @@ export class DoctorController {
   @Post()
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.doctorService.delete(id);
   }
 }

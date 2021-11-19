@@ -2,16 +2,14 @@ import {
   ForbiddenException,
   HttpStatus,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/email/email.service';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-import { bcryptCompare, bcryptHash } from 'src/utils/bcrypt-util';
+import { bcryptCompare } from 'src/utils/bcrypt-util';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';

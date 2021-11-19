@@ -38,8 +38,8 @@ export class F0Controller {
   //   return this.f0Service.update(id, updateF0Dto);
   // }
 
-  // @Delete(':id')
-  // deleteUser(@Param('id') id: number) {
-  //   return this.f0Service.delete(id);
-  // }
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.f0Service.delete(id);
+  }
 }

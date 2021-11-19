@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Transform } from 'class-transformer';
 
@@ -11,12 +12,15 @@ export class User {
 
   @Column({
     type: 'text',
+    // Unique will be check at application level
+    // unique: true,
   })
   email: string;
 
   @Column({
     type: 'text',
   })
+  @Exclude()
   password: string;
 
   @Column({

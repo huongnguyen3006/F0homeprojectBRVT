@@ -1,11 +1,9 @@
-import { Max, Min } from 'class-validator';
 import { F0 } from 'src/f0/f0.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -36,7 +34,7 @@ export class Doctor {
   @OneToMany((type) => F0, (f0) => f0.doctor, { onDelete: 'SET NULL' })
   f0s: F0[];
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE' })
+  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }

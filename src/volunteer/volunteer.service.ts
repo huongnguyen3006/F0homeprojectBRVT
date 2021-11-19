@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { UpdateVolunteerDto } from './dto/update-volunteer.dto';
 import { Volunteer } from './volunteer.entity';
@@ -24,14 +23,26 @@ export class VolunteerService {
   }
 
   async create(createVolunteerDto: CreateVolunteerDto) {
-    return await this.volunteerRepo.save(createVolunteerDto);
+    const { email, password } = createVolunteerDto;
+    const user = await this.userService.create(
+      { email, password },
+      'volunteer',
+    );
+    return await this.volunteerRepo.save({ ...createVolunteerDto, user });
   }
 
   async update(id: number, updateVolunteerDto: UpdateVolunteerDto) {
     return await this.volunteerRepo.update(id, updateVolunteerDto);
   }
 
+  async findOneOrFail(id: number) {
+    const volunteer = await this.findOne(id);
+    if (!volunteer) throw new NotFoundException();
+    return volunteer;
+  }
+
   async delete(id: number) {
-    return await this.volunteerRepo.delete(id);
+    const volunteer = await this.findOneOrFail(id);
+    return await this.userService.delete(volunteer.user.id);
   }
 }

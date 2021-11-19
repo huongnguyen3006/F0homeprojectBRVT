@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
 
 enum ValidationErrorMessage {
   InvalidEmailFormat = 'Invalid email format!',
@@ -10,9 +10,7 @@ enum ValidationErrorMessage {
 export class CreateUserDto {
   @ApiProperty()
   @IsEmail(
-    {
-      ignore_max_length: true,
-    },
+    {},
     {
       message: ValidationErrorMessage.InvalidEmailFormat,
     },

@@ -59,7 +59,7 @@ export class F0 {
   })
   exams: Exam[];
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE' })
+  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }

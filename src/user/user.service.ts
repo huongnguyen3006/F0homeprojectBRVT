@@ -37,20 +37,20 @@ export class UserService {
     await this.checkUserEmailUnique(email);
     const hash = await bcryptHash(password);
     createUserDto.password = hash;
-    return await this.userRepo.save({ ...createUserDto, role });
+    const active = role === 'admin';
+    return await this.userRepo.save({ ...createUserDto, role, active });
   }
 
   async checkUserEmailUnique(email: string) {
     const dbUser = await this.findByEmail(email);
     if (dbUser)
-      return new ConflictException('Email already exists').getResponse();
+      throw new ConflictException('Email already exists').getResponse();
   }
 
   async findByEmail(email: string): Promise<User> {
     const dbUser = await this.userRepo.findOne({
       email,
     });
-
     return dbUser;
   }
 
@@ -74,5 +74,12 @@ export class UserService {
     if (!user) throw new NotFoundException('Recruiter not found!');
     user.password = await bcryptHash(password);
     await this.userRepo.save(user);
+  }
+
+  async delete(id: number) {
+    return await this.userRepo.delete(id);
+  }
+  async deleteAll() {
+    return await this.userRepo.delete({});
   }
 }

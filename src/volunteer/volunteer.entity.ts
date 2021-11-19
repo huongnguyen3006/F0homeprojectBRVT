@@ -31,7 +31,7 @@ export class Volunteer {
   @Column({ type: 'text', nullable: true })
   avatar: string;
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE' })
+  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }
