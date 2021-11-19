@@ -36,11 +36,13 @@ export class UserService {
     const hash = await bcryptHash(password);
     createUserDto.password = hash;
     const active = role === 'admin';
-    return await this.userRepo.save({
+    const user = await this.userRepo.save({
       ...createUserDto,
       role,
       active,
     });
+    delete user.password;
+    return user;
   }
 
   async checkUserEmailUnique(email: string) {

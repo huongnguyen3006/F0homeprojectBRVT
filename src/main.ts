@@ -5,10 +5,6 @@ import { config } from 'dotenv';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 
-// somewhere in your initialization file
-
-declare const module: any;
-
 config();
 
 async function bootstrap() {
@@ -42,9 +38,5 @@ async function bootstrap() {
   });
 
   await app.listen(PORT);
-  // if (module.hot) {
-  //   module.hot.accept();
-  //   module.hot.dispose(() => app.close());
-  // }
 }
 bootstrap();

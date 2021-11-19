@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   Post,
   Request,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -16,6 +18,7 @@ import { UserService } from './user.service';
 
 @ApiTags('users')
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -42,8 +45,8 @@ export class UserController {
     return this.userService.create(createUserDto, 'admin');
   }
 
-  // @Delete()
-  // async deleteAll() {
-  //   return this.userService.deleteAll();
-  // }
+  @Delete()
+  async deleteAll() {
+    return this.userService.deleteAll();
+  }
 }
