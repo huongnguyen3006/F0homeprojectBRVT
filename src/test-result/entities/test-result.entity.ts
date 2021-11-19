@@ -1,11 +1,5 @@
 import { F0 } from 'src/f0/f0.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export const testTypes = ['quick', 'pcr'];
 export type TestType = 'quick' | 'pcr';
@@ -20,7 +14,7 @@ export class TestResult {
   })
   type: TestType;
 
-  @CreateDateColumn()
+  @Column({ type: 'date' })
   date: Date;
 
   @Column({

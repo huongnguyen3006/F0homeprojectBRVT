@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
+  IsDate,
   IsIn,
   IsNotEmpty,
   IsNumber,
@@ -22,6 +24,11 @@ export class CreateTestResultDto {
   @IsString()
   @IsNotEmpty()
   place: string;
+
+  @ApiProperty()
+  @Type(() => Date)
+  @IsDate()
+  date: Date;
 
   @ApiProperty()
   @IsNumber()
