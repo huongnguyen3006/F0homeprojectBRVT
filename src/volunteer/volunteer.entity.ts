@@ -16,26 +16,19 @@ export class Volunteer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @Transform(x => new Date('dd/mm/YYYY'))
-  // @Column('text')
-  // date: Date;
-
   @Column({ type: 'text' })
   name: string;
 
-  @Column()
+  @Column({ type: 'integer' })
   age: number;
 
   @Column({ type: 'text' })
   address: string;
 
-  @Column()
+  @Column({ type: 'text' })
   phone: number;
 
-  @Column()
-  email: string;
-
-  @Column()
+  @Column({ type: 'text', nullable: true })
   avatar: string;
 
   @OneToOne((type) => User, { onDelete: 'CASCADE' })
