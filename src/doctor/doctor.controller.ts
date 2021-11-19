@@ -10,13 +10,14 @@ import {
 } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { Doctor } from './doctor.entity';
+import { CreateDoctorDto } from './dto/create-doctor.dto';
 
 @Controller('doctors')
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
 
   @Get()
-  findAll(): Promise<Doctor[]> {
+  findAll() {
     return this.doctorService.findAll();
   }
 
@@ -26,12 +27,7 @@ export class DoctorController {
   }
 
   @Post()
-  create(@Body() doctor: Doctor) {
-    return this.doctorService.create(doctor);
-  }
-
-  @Put()
-  update(@Body() doctor: Doctor) {
-    return this.doctorService.update(doctor);
+  create(@Body() createDoctorDto: CreateDoctorDto) {
+    return this.doctorService.create(createDoctorDto);
   }
 }

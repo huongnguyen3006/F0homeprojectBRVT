@@ -18,13 +18,8 @@ import { UpdateF0Dto } from './dto/update-f0.dto';
 export class F0Controller {
   constructor(private readonly f0Service: F0Service) {}
 
-  //   @Get('/Search?')
-  //   search(@Query('Doctor') DoctorId: string): Promise<F0> {
-  //     return this.f0Service.findOneByDoctorId(DoctorId)
-  //   }
-
   @Get()
-  findAll(): Promise<F0[]> {
+  findAll() {
     return this.f0Service.findAll();
   }
 
@@ -38,13 +33,13 @@ export class F0Controller {
     return this.f0Service.create(createF0Dto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateF0Dto: UpdateF0Dto) {
-    return this.f0Service.update(id, updateF0Dto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: number, @Body() updateF0Dto: UpdateF0Dto) {
+  //   return this.f0Service.update(id, updateF0Dto);
+  // }
 
-  @Delete(':id')
-  deleteUser(@Param('id') id: number) {
-    return this.f0Service.delete(id);
-  }
+  // @Delete(':id')
+  // deleteUser(@Param('id') id: number) {
+  //   return this.f0Service.delete(id);
+  // }
 }

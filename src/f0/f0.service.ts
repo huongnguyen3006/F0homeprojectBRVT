@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateF0Dto } from './dto/create-f0.dto';
@@ -11,11 +12,12 @@ export class F0Service {
   constructor(
     @InjectRepository(F0)
     private readonly f0Repo: Repository<F0>,
+    private readonly userService: UserService,
   ) {}
-  async findAll(): Promise<F0[]> {
+  async findAll() {
     return await this.f0Repo.find({ relations: ['testResults'] });
   }
-  async findOne(id: number): Promise<F0> {
+  async findOne(id: number) {
     return await this.f0Repo.findOne(id);
   }
 
@@ -24,12 +26,15 @@ export class F0Service {
     if (!f0) throw new NotFoundException('F0 not found!');
     return f0;
   }
-  async create(createF0Dto: CreateF0Dto): Promise<F0> {
+
+  async create(createF0Dto: CreateF0Dto) {
     return await this.f0Repo.save(createF0Dto);
   }
-  async update(id: number, updateF0Dto: UpdateF0Dto): Promise<UpdateResult> {
+
+  async update(id: number, updateF0Dto: UpdateF0Dto) {
     return await this.f0Repo.update(id, updateF0Dto);
   }
+
   async delete(id: number): Promise<DeleteResult> {
     return await this.f0Repo.delete(id);
   }

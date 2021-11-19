@@ -7,8 +7,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-export class CreateF0Dto {
+export class CreateF0Dto extends CreateUserDto {
   @ApiProperty()
   @IsString()
   @MinLength(1)

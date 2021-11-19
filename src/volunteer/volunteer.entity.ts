@@ -26,7 +26,7 @@ export class Volunteer {
   address: string;
 
   @Column({ type: 'text' })
-  phoneNumber: number;
+  phoneNumber: string;
 
   @Column({ type: 'text', nullable: true })
   avatar: string;
