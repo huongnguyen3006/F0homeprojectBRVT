@@ -3,13 +3,9 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-// import { Transform } from 'class-transformer';
 
 @Entity('volunteer')
 export class Volunteer {
@@ -31,7 +27,7 @@ export class Volunteer {
   @Column({ type: 'text', nullable: true })
   avatar: string;
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
+  @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }

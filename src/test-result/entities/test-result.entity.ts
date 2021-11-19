@@ -33,6 +33,6 @@ export class TestResult {
   })
   place: string;
 
-  @ManyToOne((type) => F0, (f0) => f0.testResults, { onDelete: 'CASCADE' })
+  @ManyToOne(() => F0, (f0) => f0.testResults, { onDelete: 'CASCADE' })
   f0: F0;
 }

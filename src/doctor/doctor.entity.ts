@@ -31,10 +31,10 @@ export class Doctor {
   @Column({ type: 'text', nullable: true })
   avatar: string;
 
-  @OneToMany((type) => F0, (f0) => f0.doctor, { onDelete: 'SET NULL' })
+  @OneToMany(() => F0, (f0) => f0.doctor, { onDelete: 'SET NULL' })
   f0s: F0[];
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
+  @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }

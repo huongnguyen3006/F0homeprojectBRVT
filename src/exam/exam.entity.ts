@@ -24,6 +24,6 @@ export class Exam {
   @Column({ type: 'text', nullable: true })
   note: string;
 
-  @ManyToOne((type) => F0, (f0) => f0.exams)
+  @ManyToOne(() => F0, (f0) => f0.exams, { onDelete: 'CASCADE' })
   f0: F0;
 }

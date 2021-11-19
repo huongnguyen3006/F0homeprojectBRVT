@@ -46,20 +46,16 @@ export class F0 {
   @Column({ type: 'text', nullable: true })
   treatment: string;
 
-  @ManyToOne((type) => Doctor, (doctor) => doctor.f0s)
+  @ManyToOne(() => Doctor, (doctor) => doctor.f0s)
   doctor: Doctor;
 
-  @OneToMany((type) => TestResult, (testResult) => testResult.f0, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => TestResult, (testResult) => testResult.f0)
   testResults: TestResult[];
 
-  @OneToMany((type) => Exam, (exam) => exam.f0, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Exam, (exam) => exam.f0)
   exams: Exam[];
 
-  @OneToOne((type) => User, { onDelete: 'CASCADE', eager: true })
+  @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
 }
