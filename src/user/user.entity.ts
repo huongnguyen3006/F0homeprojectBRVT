@@ -8,16 +8,7 @@ export class User {
 
   @Column({
     type: 'text',
-  })
-  firstName: string;
-
-  @Column({
-    type: 'text',
-  })
-  lastName: string;
-
-  @Column({
-    type: 'text',
+    unique: true,
   })
   email: string;
 
