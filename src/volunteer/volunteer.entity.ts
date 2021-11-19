@@ -1,45 +1,44 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 // import { Transform } from 'class-transformer';
 
 @Entity('volunteer')
-export class Volunteer{
+export class Volunteer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    // @Transform(x => new Date('dd/mm/YYYY'))
-    // @Column('text')
-    // date: Date;
+  // @Transform(x => new Date('dd/mm/YYYY'))
+  // @Column('text')
+  // date: Date;
 
-    @Column({ type: 'text' })
-    name: string;
-  
-    @Column() 
-    age: number;
-  
-    @Column({ type: 'text' })
-    address: string;
-  
-    @Column()
-    phone: number;
-  
-    @Column()
-    email: string;
-  
-    @Column()
-    avatar: string;
-  
-    
-  
-//     @ManyToOne(type => F0, F0 => F0.Id,  {eager: false})
-//     @JoinColumn({name: "F0_Id", referencedColumnName: "Id"})   
-//      // defining this is also optional because by default,
-//      // the referenced foreign key is named as <column_name>_id or account_id
-//    F0: F0;
-  
-  //   @OneToMany(type => Doctor, Doctor => Doctor.F0, {eager: true})
-  //   Doctor: Doctor[];
-   
+  @Column({ type: 'text' })
+  name: string;
+
+  @Column()
+  age: number;
+
+  @Column({ type: 'text' })
+  address: string;
+
+  @Column()
+  phone: number;
+
+  @Column()
+  email: string;
+
+  @Column()
+  avatar: string;
+
+  @OneToOne((type) => User, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  user: User;
 }
-

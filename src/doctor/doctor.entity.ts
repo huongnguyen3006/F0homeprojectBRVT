@@ -1,4 +1,5 @@
 import { Max, Min } from 'class-validator';
+import { F0 } from 'src/f0/f0.entity';
 import {
   Column,
   Entity,
@@ -33,11 +34,11 @@ export class Doctor {
   @Column({ type: 'text' })
   phone: string;
 
-  // @Column()
-  // Zalo: number;
-
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   avatar: string;
+
+  @OneToMany((type) => F0, (f0) => f0.doctor)
+  f0s: F0[];
 
   //     @ManyToOne(type => F0, F0 => F0.Id,  {eager: false})
   //     @JoinColumn({name: "F0_Id", referencedColumnName: "Id"})

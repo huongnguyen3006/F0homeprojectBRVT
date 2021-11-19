@@ -1,6 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Transform } from 'class-transformer';
 
+const userRoles = ['f0', 'doctor', 'volunteer', 'admin'];
+type UserRole = 'f0' | 'doctor' | 'volunteer' | 'admin';
+
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
@@ -8,7 +11,6 @@ export class User {
 
   @Column({
     type: 'text',
-    unique: true,
   })
   email: string;
 
@@ -22,4 +24,11 @@ export class User {
     default: false,
   })
   active: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: userRoles,
+    default: 'f0',
+  })
+  role: UserRole;
 }

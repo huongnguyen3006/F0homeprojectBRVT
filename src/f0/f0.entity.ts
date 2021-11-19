@@ -1,7 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import {Doctor} from 'src/doctor/doctor.entity'
+import { Doctor } from 'src/doctor/doctor.entity';
 import { Transform } from 'class-transformer';
+import { TestResult } from 'src/test-result/entities/test-result.entity';
 
 @Entity('f0s')
 export class F0 {
@@ -11,47 +19,41 @@ export class F0 {
   @Column({ type: 'text' })
   name: string;
 
-  @Column() 
+  @Column({ type: 'integer' })
   age: number;
 
   @Column({ type: 'text' })
   add: string;
 
-  @Column()
-  tel: number;
+  @Column({ type: 'text' })
+  phoneNumber: string;
 
-  @Column()
-  zalo: number;
+  @Column({ type: 'text', nullable: true })
+  zalo: string;
 
-
-  @Column()
-  don: string;
-
-  @Column('text')
-  symstoms_st: string;
-
-  @Column()
-  treated_by: number;
-
-//   @ManyToOne(type => F0, F0 => F0.Id,  {eager: false})
-//   @JoinColumn({name: "F0_Id", referencedColumnName: "Id"})   
-//    // defining this is also optional because by default,
-//    // the referenced foreign key is named as <column_name>_id or account_id
-//  F0: F0;
-
-//   @OneToMany(type => Doctor, Doctor => Doctor.F0, {eager: true})
-//   Doctor: Doctor[];
-
-  @Column()
+  @Column({ type: 'text', nullable: true })
   dop: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
+  don: string;
+
+  @Column({ type: 'text', nullable: true })
+  symptoms: string;
+
+  @Column({ type: 'text', nullable: true })
   note: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   treatment: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   exams: string;
-}
 
+  @ManyToOne((type) => Doctor, (doctor) => doctor.f0s)
+  doctor: Doctor;
+
+  @OneToMany((type) => TestResult, (testResult) => testResult.f0, {
+    onDelete: 'CASCADE',
+  })
+  testResults: TestResult[];
+}
