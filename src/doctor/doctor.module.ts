@@ -7,11 +7,7 @@ import { Doctor } from './doctor.entity';
 import { DoctorService } from './doctor.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Doctor]),
-    UserModule,
-    forwardRef(() => F0Module),
-  ],
+  imports: [TypeOrmModule.forFeature([Doctor]), UserModule, F0Module],
   providers: [DoctorService],
   controllers: [DoctorController],
   exports: [DoctorService],

@@ -12,9 +12,8 @@ import { F0Service } from './f0.service';
   imports: [
     TypeOrmModule.forFeature([F0]),
     UserModule,
-    forwardRef(() => DoctorModule),
-    forwardRef(() => TestResultModule),
-    forwardRef(() => ExamModule),
+    TestResultModule,
+    ExamModule,
   ],
   providers: [F0Service],
   controllers: [F0Controller],
