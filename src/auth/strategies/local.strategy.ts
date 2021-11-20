@@ -6,16 +6,18 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super();
+    super({
+      usernameField: 'email',
+    });
   }
-  async validate(username: string, password: string) {
+  async validate(email: string, password: string) {
     const user = await this.authService.getUserByEmailAndPassword(
-      username,
+      email,
       password,
     );
     console.log(user);
     if (!user) {
-      throw new UnauthorizedException('User and password do not match');
+      throw new UnauthorizedException('Email and password do not match');
     }
     return user;
   }

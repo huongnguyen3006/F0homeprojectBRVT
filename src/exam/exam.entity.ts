@@ -1,48 +1,29 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
-// import { Transform } from 'class-transformer';
+import { F0 } from 'src/f0/f0.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('exam')
 export class Exam {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
-   
-    @Column() 
-    created_by: number; 
+  @Column({ type: 'float' })
+  temperature: number;
 
-    @Column() 
-    f0: string; 
+  @Column({ type: 'float' })
+  spo2: number;
 
-    @Column()
-    temperature: number;
-  
-    @Column() 
-    spo2: number;
-  
-  
-    @Column('text')
-    symptoms: string;
+  @Column({ type: 'date' })
+  dot: Date;
 
-    @Column('datetime')
-    dot: string;
-  
-    @Column('text')
-    prescription: string;
-  
-    @Column('text')
-    note: string;
-  
-    
-  
-//     @ManyToOne(type => F0, F0 => F0.Id,  {eager: false})
-//     @JoinColumn({name: "F0_Id", referencedColumnName: "Id"})   
-//      // defining this is also optional because by default,
-//      // the referenced foreign key is named as <column_name>_id or account_id
-//    F0: F0;
-  
-  //   @OneToMany(type => Doctor, Doctor => Doctor.F0, {eager: true})
-  //   Doctor: Doctor[];
-   
+  @Column({ type: 'text', nullable: true })
+  symptoms: string;
+
+  @Column({ type: 'text', nullable: true })
+  prescription: string;
+
+  @Column({ type: 'text', nullable: true })
+  note: string;
+
+  @ManyToOne(() => F0, (f0) => f0.exams, { onDelete: 'CASCADE' })
+  f0: F0;
 }
-
