@@ -6,6 +6,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { F0 } from 'src/f0/f0.entity';
@@ -32,5 +33,6 @@ export class CreateTestResultDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   f0: F0;
 }

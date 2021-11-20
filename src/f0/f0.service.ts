@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from 'src/doctor/doctor.entity';
+import { CreateExamDto } from 'src/exam/dto/create-exam.dto';
+import { ExamService } from 'src/exam/exam.service';
+import { CreateTestResultDto } from 'src/test-result/dto/create-test-result.dto';
+import { TestResultService } from 'src/test-result/test-result.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateF0Dto } from './dto/create-f0.dto';
@@ -13,6 +17,8 @@ export class F0Service {
     @InjectRepository(F0)
     private readonly f0Repo: Repository<F0>,
     private readonly userService: UserService,
+    private readonly examService: ExamService,
+    private readonly testResultService: TestResultService,
   ) {}
   async findAll() {
     return await this.f0Repo.find();
@@ -68,5 +74,17 @@ export class F0Service {
     f0.doctor = doctor;
     await this.f0Repo.save(f0);
     return f0Id;
+  }
+
+  async addTestResult(id: number, createTestResultDto: CreateTestResultDto) {
+    const f0 = await this.f0Repo.findOneOrFail(id);
+    createTestResultDto.f0 = f0;
+    return await this.testResultService.create(createTestResultDto);
+  }
+
+  async addExam(id: number, createExamDto: CreateExamDto) {
+    const f0 = await this.f0Repo.findOneOrFail(id);
+    createExamDto.f0 = f0;
+    return await this.examService.create(createExamDto);
   }
 }
