@@ -7,6 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Doctor } from 'src/doctor/doctor.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 export class CreateF0Dto extends CreateUserDto {

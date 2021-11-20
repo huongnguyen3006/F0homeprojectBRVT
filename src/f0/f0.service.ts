@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Doctor } from 'src/doctor/doctor.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateF0Dto } from './dto/create-f0.dto';
 import { UpdateF0Dto } from './dto/update-f0.dto';
 import { F0 } from './f0.entity';
@@ -40,5 +40,33 @@ export class F0Service {
   async delete(id: number) {
     const f0 = await this.findOneOrFail(id);
     return await this.userService.delete(f0.user.id);
+  }
+
+  async findAllOfDoctorByDoctorId(id: number) {
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoin('f0.doctor', 'doctor')
+      .where('doctor.id = :id', { id })
+      .getMany();
+    return f0s;
+  }
+
+  async findAllOfDoctorByUserId(id: number) {
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoinAndSelect('f0.testResults', 'testResults')
+      .leftJoinAndSelect('f0.exams', 'exams')
+      .leftJoin('f0.doctor', 'doctor')
+      .where('doctor.user.id = :id', { id })
+      .getMany();
+    return f0s;
+  }
+
+  async assignDoctor(f0Id: number, doctor: Doctor) {
+    const f0 = await this.f0Repo.findOne(f0Id);
+    if (!f0) return null;
+    f0.doctor = doctor;
+    await this.f0Repo.save(f0);
+    return f0Id;
   }
 }

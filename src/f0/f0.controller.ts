@@ -1,5 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { DoctorService } from 'src/doctor/doctor.service';
 import { CreateF0Dto } from './dto/create-f0.dto';
 import { F0Service } from './f0.service';
 
@@ -8,7 +20,14 @@ import { F0Service } from './f0.service';
 export class F0Controller {
   constructor(private readonly f0Service: F0Service) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
+  async getMyF0s(@Request() req: RequestWithUser) {
+    const { id } = req.user;
+    return this.f0Service.findAllOfDoctorByUserId(id);
+  }
+
+  @Get('all')
   findAll() {
     return this.f0Service.findAll();
   }

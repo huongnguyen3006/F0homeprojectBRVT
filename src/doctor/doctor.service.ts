@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { F0Service } from 'src/f0/f0.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Doctor } from './doctor.entity';
+import { AssignF0sDto } from './dto/assign-f0s.dto';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
@@ -12,6 +14,7 @@ export class DoctorService {
     @InjectRepository(Doctor)
     private readonly doctorRepo: Repository<Doctor>,
     private readonly userService: UserService,
+    private readonly f0Service: F0Service,
   ) {}
 
   async findAll() {
@@ -30,6 +33,17 @@ export class DoctorService {
 
   async update(id: number, updateDoctorDto: UpdateDoctorDto) {
     return await this.doctorRepo.update(id, updateDoctorDto);
+  }
+
+  async assignF0s(doctorId: number, assignF0sDto: AssignF0sDto) {
+    const doctor = await this.findOneOrFail(doctorId);
+    const { f0s } = assignF0sDto;
+    return await Promise.all(
+      f0s.map(async (f0) => {
+        const f0Id = f0 as unknown as number;
+        return await this.f0Service.assignDoctor(f0Id, doctor);
+      }),
+    );
   }
 
   async findOneOrFail(id: number) {
