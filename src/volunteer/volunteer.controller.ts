@@ -1,5 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { CreateF0Dto } from 'src/f0/dto/create-f0.dto';
+import { F0Service } from 'src/f0/f0.service';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { Volunteer } from './volunteer.entity';
 import { VolunteerService } from './volunteer.service';
@@ -7,7 +20,10 @@ import { VolunteerService } from './volunteer.service';
 @ApiTags('volunteer')
 @Controller('volunteers')
 export class VolunteerController {
-  constructor(private readonly volunteerService: VolunteerService) {}
+  constructor(
+    private readonly volunteerService: VolunteerService,
+    private readonly f0Service: F0Service,
+  ) {}
 
   @Get()
   findAll(): Promise<Volunteer[]> {
@@ -22,6 +38,25 @@ export class VolunteerController {
   @Post()
   create(@Body() createVolunteerDto: CreateVolunteerDto) {
     return this.volunteerService.create(createVolunteerDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me/f0s')
+  getMyF0s(@Request() req: RequestWithUser) {
+    const { id } = req.user;
+    return this.f0Service.findAllOfVolunteerByUserId(id);
+  }
+
+  @Get(':id/f0s')
+  getVolunteerF0s(@Param('id') id: number) {
+    return this.f0Service.findAllOfVolunteerByVolunteerId(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('me/f0s')
+  addMyF0(@Request() req: RequestWithUser, @Body() CreateF0Dto: CreateF0Dto) {
+    const { id } = req.user;
+    return this.volunteerService.addF0(id, CreateF0Dto);
   }
 
   // @Patch(':id')

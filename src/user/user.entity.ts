@@ -2,8 +2,8 @@ import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Transform } from 'class-transformer';
 
-const userRoles = ['f0', 'doctor', 'volunteer', 'admin'];
-export type UserRole = 'f0' | 'doctor' | 'volunteer' | 'admin';
+const userRoles = ['doctor', 'volunteer', 'admin'];
+export type UserRole = 'doctor' | 'volunteer' | 'admin';
 
 @Entity('user')
 export class User {
@@ -32,7 +32,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: userRoles,
-    default: 'f0',
+    default: 'volunteer',
   })
   role: UserRole;
 }

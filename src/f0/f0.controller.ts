@@ -22,14 +22,7 @@ import { F0Service } from './f0.service';
 export class F0Controller {
   constructor(private readonly f0Service: F0Service) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
-  async getMyF0s(@Request() req: RequestWithUser) {
-    const { id } = req.user;
-    return this.f0Service.findAllOfDoctorByUserId(id);
-  }
-
-  @Get('all')
   findAll() {
     return this.f0Service.findAll();
   }
@@ -37,11 +30,6 @@ export class F0Controller {
   @Get(':id')
   get(@Param('id') id: number) {
     return this.f0Service.findOne(id);
-  }
-
-  @Post()
-  create(@Body() createF0Dto: CreateF0Dto) {
-    return this.f0Service.create(createF0Dto);
   }
 
   @Post(':id/exams')

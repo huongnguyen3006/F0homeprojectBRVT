@@ -1,8 +1,10 @@
+import { F0 } from 'src/f0/f0.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,4 +32,7 @@ export class Volunteer {
   @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()
   user: User;
+
+  @OneToMany(() => F0, (f0) => f0.volunteer, { onDelete: 'SET NULL' })
+  f0s: F0[];
 }

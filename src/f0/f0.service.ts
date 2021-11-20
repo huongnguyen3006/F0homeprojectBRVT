@@ -28,9 +28,7 @@ export class F0Service {
   }
 
   async create(createF0Dto: CreateF0Dto) {
-    const { email, password } = createF0Dto;
-    const user = await this.userService.create({ email, password }, 'f0');
-    return await this.f0Repo.save({ ...createF0Dto, user });
+    return await this.f0Repo.save(createF0Dto);
   }
 
   async update(id: number, updateF0Dto: UpdateF0Dto) {
@@ -44,8 +42,27 @@ export class F0Service {
   }
 
   async delete(id: number) {
-    const f0 = await this.findOneOrFail(id);
-    return await this.userService.delete(f0.user.id);
+    return await this.f0Repo.delete(id);
+  }
+
+  async findAllOfVolunteerByUserId(id: number) {
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoinAndSelect('f0.testResults', 'testResults')
+      .leftJoinAndSelect('f0.exams', 'exams')
+      .leftJoin('f0.volunteer', 'volunteer')
+      .where('volunteer.user.id = :id', { id })
+      .getMany();
+    return f0s;
+  }
+
+  async findAllOfVolunteerByVolunteerId(id: number) {
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoin('f0.volunteer', 'volunteer')
+      .where('volunteer.id = :id', { id })
+      .getMany();
+    return f0s;
   }
 
   async findAllOfDoctorByDoctorId(id: number) {
