@@ -1,27 +1,22 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Post,
   Request,
-  UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import RequestWithUser from 'src/auth/interfaces/request-with-user';
 import { Permission } from 'src/permissions/permission.enum';
-import { Permissions } from 'src/permissions/permissions.decorator';
-import { PermissionsGuard } from 'src/permissions/permissions.guard';
+import { RequirePermissions } from 'src/permissions/require-permissions.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
 @Controller('users')
-@Permissions(Permission.ADMIN)
+@RequirePermissions(Permission.ADMIN)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
