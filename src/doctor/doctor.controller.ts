@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -54,6 +55,11 @@ export class DoctorController {
   @Post()
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
+  }
+
+  @Patch(':id/approve')
+  approve(@Param('id') id: number) {
+    return this.doctorService.approve(id);
   }
 
   @Delete(':id')

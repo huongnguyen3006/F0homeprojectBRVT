@@ -36,7 +36,14 @@ export class DoctorService {
   async create(createDoctorDto: CreateDoctorDto) {
     const { email, password } = createDoctorDto;
     const user = await this.userService.create({ email, password }, 'doctor');
-    return await this.doctorRepo.save({ ...createDoctorDto, user });
+    return await this.doctorRepo.save({
+      ...createDoctorDto,
+      user,
+    });
+  }
+
+  async approve(id: number) {
+    return await this.doctorRepo.update(id, { status: 'active' });
   }
 
   async update(id: number, updateDoctorDto: UpdateDoctorDto) {
