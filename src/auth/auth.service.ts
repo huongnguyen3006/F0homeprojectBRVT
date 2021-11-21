@@ -10,7 +10,7 @@ import { DoctorService } from 'src/doctor/doctor.service';
 import { EmailService } from 'src/email/email.service';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-import { bcryptCompare } from 'src/utils/bcrypt-util';
+import { bcryptCompare } from 'src/common/utils/bcrypt-util';
 import { VolunteerService } from 'src/volunteer/volunteer.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';

@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { DoctorModule } from './doctor/doctor.module';
 import { ExamModule } from './exam/exam.module';
 import { F0Module } from './f0/f0.module';
+import { PermissionsGuard } from './permissions/permissions.guard';
 import { TestResultModule } from './test-result/test-result.module';
 import { UserModule } from './user/user.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
@@ -40,6 +43,18 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     TestResultModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    /* Make all controllers protected by default,
+    to make a route/controller public, add @Public decorator 
+    */
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+  ],
 })
 export class AppModule {}

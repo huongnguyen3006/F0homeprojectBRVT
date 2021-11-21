@@ -40,7 +40,6 @@ export class VolunteerController {
     return this.volunteerService.create(createVolunteerDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me/f0s')
   getMyF0s(@Request() req: RequestWithUser) {
     const { volunteerId } = req.user;
@@ -52,7 +51,6 @@ export class VolunteerController {
     return this.f0Service.findAllOfVolunteer(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('me/f0s')
   addMyF0(@Request() req: RequestWithUser, @Body() CreateF0Dto: CreateF0Dto) {
     const { id } = req.user;

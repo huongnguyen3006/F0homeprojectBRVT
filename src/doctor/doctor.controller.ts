@@ -7,12 +7,12 @@ import {
   Patch,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import RequestWithUser from 'src/auth/interfaces/request-with-user';
 import { F0Service } from 'src/f0/f0.service';
+import { Permission } from 'src/permissions/permission.enum';
+import { RequirePermissions } from 'src/permissions/require-permissions.decorator';
 import { DoctorService } from './doctor.service';
 import { AssignF0sDto } from './dto/assign-f0s.dto';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
@@ -35,7 +35,6 @@ export class DoctorController {
     return this.doctorService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me/f0s')
   getMyF0s(@Request() req: RequestWithUser) {
     const { doctorId } = req.user;
@@ -57,6 +56,7 @@ export class DoctorController {
     return this.doctorService.create(createDoctorDto);
   }
 
+  @RequirePermissions(Permission.ADMIN)
   @Patch(':id/approve')
   approve(@Param('id') id: number) {
     return this.doctorService.approve(id);

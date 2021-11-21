@@ -13,12 +13,15 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { Permission } from 'src/permissions/permission.enum';
+import { Permissions } from 'src/permissions/permissions.decorator';
+import { PermissionsGuard } from 'src/permissions/permissions.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
 @Controller('users')
-@UseInterceptors(ClassSerializerInterceptor)
+@Permissions(Permission.ADMIN)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -28,7 +31,6 @@ export class UserController {
   }
 
   @Get('me')
-  @UseGuards(JwtAuthGuard)
   getLoginUser(@Request() req: RequestWithUser) {
     const { id } = req.user;
     console.log(req.user);
