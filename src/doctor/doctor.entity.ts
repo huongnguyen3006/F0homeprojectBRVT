@@ -11,6 +11,9 @@ import {
 
 // import { Transform } from 'class-transformer';
 
+export const doctorStatusList = ['pending', 'active', 'deactivated'];
+export type DoctorStatus = 'pending' | 'active' | 'deactivated';
+
 @Entity('doctor')
 export class Doctor {
   @PrimaryGeneratedColumn()
@@ -33,6 +36,9 @@ export class Doctor {
 
   @OneToMany(() => F0, (f0) => f0.doctor, { onDelete: 'SET NULL' })
   f0s: F0[];
+
+  @Column({ type: 'enum', enum: doctorStatusList, default: 'pending' })
+  status: DoctorStatus;
 
   @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn()

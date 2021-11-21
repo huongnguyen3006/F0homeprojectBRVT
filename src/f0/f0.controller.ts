@@ -1,5 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { DoctorService } from 'src/doctor/doctor.service';
+import { CreateExamDto } from 'src/exam/dto/create-exam.dto';
+import { Permission } from 'src/permissions/permission.enum';
+import { RequirePermissions } from 'src/permissions/require-permissions.decorator';
+import { CreateTestResultDto } from 'src/test-result/dto/create-test-result.dto';
 import { CreateF0Dto } from './dto/create-f0.dto';
 import { F0Service } from './f0.service';
 
@@ -18,15 +34,20 @@ export class F0Controller {
     return this.f0Service.findOne(id);
   }
 
-  @Post()
-  create(@Body() createF0Dto: CreateF0Dto) {
-    return this.f0Service.create(createF0Dto);
+  @RequirePermissions(Permission.CREATE_EXAM)
+  @Post(':id/exams')
+  addExam(@Param('id') id: number, @Body() createExamDto: CreateExamDto) {
+    return this.f0Service.addExam(id, createExamDto);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: number, @Body() updateF0Dto: UpdateF0Dto) {
-  //   return this.f0Service.update(id, updateF0Dto);
-  // }
+  @RequirePermissions(Permission.CREATE_TEST_RESULT)
+  @Post(':id/test-results')
+  addTestResult(
+    @Param('id') id: number,
+    @Body() createTestResultDto: CreateTestResultDto,
+  ) {
+    return this.f0Service.addTestResult(id, createTestResultDto);
+  }
 
   @Delete(':id')
   delete(@Param('id') id: number) {

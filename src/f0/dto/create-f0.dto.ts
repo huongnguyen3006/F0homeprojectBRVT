@@ -7,9 +7,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { Volunteer } from 'src/volunteer/volunteer.entity';
 
-export class CreateF0Dto extends CreateUserDto {
+export class CreateF0Dto {
   @ApiProperty()
   @IsString()
   @MinLength(1)
@@ -66,4 +66,9 @@ export class CreateF0Dto extends CreateUserDto {
   @IsOptional()
   @MaxLength(100)
   treatment: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  volunteer: Volunteer;
 }

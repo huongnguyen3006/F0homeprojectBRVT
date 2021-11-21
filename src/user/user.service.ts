@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { bcryptHash } from 'src/utils/bcrypt-util';
+import { bcryptHash } from 'src/common/utils/bcrypt-util';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserRole } from './user.entity';

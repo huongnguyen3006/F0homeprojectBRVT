@@ -2,6 +2,7 @@ import { Doctor } from 'src/doctor/doctor.entity';
 import { Exam } from 'src/exam/exam.entity';
 import { TestResult } from 'src/test-result/entities/test-result.entity';
 import { User } from 'src/user/user.entity';
+import { Volunteer } from 'src/volunteer/volunteer.entity';
 import {
   Column,
   Entity,
@@ -47,13 +48,12 @@ export class F0 {
   @ManyToOne(() => Doctor, (doctor) => doctor.f0s)
   doctor: Doctor;
 
+  @ManyToOne(() => Volunteer, (volunteer) => volunteer.f0s)
+  volunteer: Volunteer;
+
   @OneToMany(() => TestResult, (testResult) => testResult.f0)
   testResults: TestResult[];
 
   @OneToMany(() => Exam, (exam) => exam.f0)
   exams: Exam[];
-
-  @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
-  @JoinColumn()
-  user: User;
 }

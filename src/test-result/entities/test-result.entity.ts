@@ -10,7 +10,8 @@ export class TestResult {
   id: number;
 
   @Column({
-    type: 'text',
+    type: 'enum',
+    enum: testTypes,
   })
   type: TestType;
 

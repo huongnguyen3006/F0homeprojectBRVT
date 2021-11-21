@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateF0Dto } from 'src/f0/dto/create-f0.dto';
+import { F0Service } from 'src/f0/f0.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
@@ -11,6 +13,7 @@ export class VolunteerService {
   constructor(
     @InjectRepository(Volunteer)
     private readonly volunteerRepo: Repository<Volunteer>,
+    private readonly f0Service: F0Service,
     private readonly userService: UserService,
   ) {}
 
@@ -29,6 +32,20 @@ export class VolunteerService {
       'volunteer',
     );
     return await this.volunteerRepo.save({ ...createVolunteerDto, user });
+  }
+
+  async findOneByUserId(id: number) {
+    return await this.volunteerRepo
+      .createQueryBuilder('volunteer')
+      .leftJoinAndSelect('volunteer.user', 'user')
+      .where('user.id = :id', { id })
+      .getOneOrFail();
+  }
+
+  async addF0(volunteerId: number, createF0Dto: CreateF0Dto) {
+    const volunteer = await this.findOneByUserId(volunteerId);
+    createF0Dto.volunteer = volunteer;
+    return await this.f0Service.create(createF0Dto);
   }
 
   async update(id: number, updateVolunteerDto: UpdateVolunteerDto) {

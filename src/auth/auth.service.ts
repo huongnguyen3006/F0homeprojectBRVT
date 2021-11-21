@@ -6,10 +6,12 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { DoctorService } from 'src/doctor/doctor.service';
 import { EmailService } from 'src/email/email.service';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-import { bcryptCompare } from 'src/utils/bcrypt-util';
+import { bcryptCompare } from 'src/common/utils/bcrypt-util';
+import { VolunteerService } from 'src/volunteer/volunteer.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -18,7 +20,6 @@ import { SignEmailTokenDto } from './dto/sign-email-token.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { EmailPayload } from './interfaces/email-payload';
 import { JwtPayload } from './interfaces/jwt-payload';
-import { LoginResponse } from './interfaces/login.response';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +27,8 @@ export class AuthService {
 
   constructor(
     private readonly userService: UserService,
+    private readonly doctorService: DoctorService,
+    private readonly volunteerService: VolunteerService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly emailService: EmailService,
@@ -44,9 +47,17 @@ export class AuthService {
     return user;
   }
 
-  async login(user: User) {
+  async login(user: JwtPayload) {
     const { id, email, role } = user;
     const payload: JwtPayload = { id, email, role };
+    // Add role id to payload
+    if (role === 'doctor')
+      payload.doctorId = (await this.doctorService.findOneByUserId(id)).id;
+    else if (role === 'volunteer')
+      payload.volunteerId = (
+        await this.volunteerService.findOneByUserId(id)
+      ).id;
+
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }

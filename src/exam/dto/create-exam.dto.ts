@@ -42,5 +42,6 @@ export class CreateExamDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   f0: F0;
 }

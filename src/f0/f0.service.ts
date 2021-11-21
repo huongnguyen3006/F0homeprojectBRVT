@@ -1,8 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Doctor } from 'src/doctor/doctor.entity';
+import { CreateExamDto } from 'src/exam/dto/create-exam.dto';
+import { ExamService } from 'src/exam/exam.service';
+import { CreateTestResultDto } from 'src/test-result/dto/create-test-result.dto';
+import { TestResultService } from 'src/test-result/test-result.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateF0Dto } from './dto/create-f0.dto';
 import { UpdateF0Dto } from './dto/update-f0.dto';
 import { F0 } from './f0.entity';
@@ -13,6 +17,8 @@ export class F0Service {
     @InjectRepository(F0)
     private readonly f0Repo: Repository<F0>,
     private readonly userService: UserService,
+    private readonly examService: ExamService,
+    private readonly testResultService: TestResultService,
   ) {}
   async findAll() {
     return await this.f0Repo.find();
@@ -22,9 +28,7 @@ export class F0Service {
   }
 
   async create(createF0Dto: CreateF0Dto) {
-    const { email, password } = createF0Dto;
-    const user = await this.userService.create({ email, password }, 'f0');
-    return await this.f0Repo.save({ ...createF0Dto, user });
+    return await this.f0Repo.save(createF0Dto);
   }
 
   async update(id: number, updateF0Dto: UpdateF0Dto) {
@@ -38,7 +42,50 @@ export class F0Service {
   }
 
   async delete(id: number) {
-    const f0 = await this.findOneOrFail(id);
-    return await this.userService.delete(f0.user.id);
+    return await this.f0Repo.delete(id);
+  }
+
+  async findAllOfVolunteer(id: number) {
+    if (!id) throw new NotFoundException();
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoin('f0.volunteer', 'volunteer')
+      .leftJoinAndSelect('f0.testResults', 'testResults')
+      .leftJoinAndSelect('f0.exams', 'exams')
+      .where('volunteer.id = :id', { id })
+      .getMany();
+    return f0s;
+  }
+
+  async findAllOfDoctor(id: number) {
+    if (!id) throw new NotFoundException();
+    const f0s = await this.f0Repo
+      .createQueryBuilder('f0')
+      .leftJoin('f0.doctor', 'doctor')
+      .leftJoinAndSelect('f0.testResults', 'testResults')
+      .leftJoinAndSelect('f0.exams', 'exams')
+      .where('doctor.id = :id', { id })
+      .getMany();
+    return f0s;
+  }
+
+  async assignDoctor(f0Id: number, doctor: Doctor) {
+    const f0 = await this.f0Repo.findOne(f0Id);
+    if (!f0) return null;
+    f0.doctor = doctor;
+    await this.f0Repo.save(f0);
+    return f0Id;
+  }
+
+  async addTestResult(id: number, createTestResultDto: CreateTestResultDto) {
+    const f0 = await this.f0Repo.findOneOrFail(id);
+    createTestResultDto.f0 = f0;
+    return await this.testResultService.create(createTestResultDto);
+  }
+
+  async addExam(id: number, createExamDto: CreateExamDto) {
+    const f0 = await this.f0Repo.findOneOrFail(id);
+    createExamDto.f0 = f0;
+    return await this.examService.create(createExamDto);
   }
 }
