@@ -25,6 +25,14 @@ export class DoctorService {
     return await this.doctorRepo.findOne(id);
   }
 
+  async findOneByUserId(id: number) {
+    return await this.doctorRepo
+      .createQueryBuilder('doctor')
+      .leftJoinAndSelect('doctor.user', 'user')
+      .where('user.id = :id', { id })
+      .getOneOrFail();
+  }
+
   async create(createDoctorDto: CreateDoctorDto) {
     const { email, password } = createDoctorDto;
     const user = await this.userService.create({ email, password }, 'doctor');

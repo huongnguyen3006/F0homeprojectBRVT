@@ -45,42 +45,26 @@ export class F0Service {
     return await this.f0Repo.delete(id);
   }
 
-  async findAllOfVolunteerByUserId(id: number) {
+  async findAllOfVolunteer(id: number) {
+    if (!id) throw new NotFoundException();
     const f0s = await this.f0Repo
       .createQueryBuilder('f0')
+      .leftJoin('f0.volunteer', 'volunteer')
       .leftJoinAndSelect('f0.testResults', 'testResults')
       .leftJoinAndSelect('f0.exams', 'exams')
-      .leftJoin('f0.volunteer', 'volunteer')
-      .where('volunteer.user.id = :id', { id })
-      .getMany();
-    return f0s;
-  }
-
-  async findAllOfVolunteerByVolunteerId(id: number) {
-    const f0s = await this.f0Repo
-      .createQueryBuilder('f0')
-      .leftJoin('f0.volunteer', 'volunteer')
       .where('volunteer.id = :id', { id })
       .getMany();
     return f0s;
   }
 
-  async findAllOfDoctorByDoctorId(id: number) {
+  async findAllOfDoctor(id: number) {
+    if (!id) throw new NotFoundException();
     const f0s = await this.f0Repo
       .createQueryBuilder('f0')
       .leftJoin('f0.doctor', 'doctor')
-      .where('doctor.id = :id', { id })
-      .getMany();
-    return f0s;
-  }
-
-  async findAllOfDoctorByUserId(id: number) {
-    const f0s = await this.f0Repo
-      .createQueryBuilder('f0')
       .leftJoinAndSelect('f0.testResults', 'testResults')
       .leftJoinAndSelect('f0.exams', 'exams')
-      .leftJoin('f0.doctor', 'doctor')
-      .where('doctor.user.id = :id', { id })
+      .where('doctor.id = :id', { id })
       .getMany();
     return f0s;
   }

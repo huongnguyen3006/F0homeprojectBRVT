@@ -10,10 +10,14 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LocalStrategy } from './strategies/local.strategy';
 import { EmailModule } from 'src/email/email.module';
+import { DoctorModule } from 'src/doctor/doctor.module';
+import { VolunteerModule } from 'src/volunteer/volunteer.module';
 
 @Module({
   imports: [
-    forwardRef(() => UserModule),
+    UserModule,
+    DoctorModule,
+    VolunteerModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => {

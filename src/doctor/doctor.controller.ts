@@ -37,13 +37,13 @@ export class DoctorController {
   @UseGuards(JwtAuthGuard)
   @Get('me/f0s')
   getMyF0s(@Request() req: RequestWithUser) {
-    const { id } = req.user;
-    return this.f0Service.findAllOfDoctorByUserId(id);
+    const { doctorId } = req.user;
+    return this.f0Service.findAllOfDoctor(doctorId);
   }
 
   @Get(':id/f0s')
   getDoctorF0s(@Param('id') id: number) {
-    return this.f0Service.findAllOfDoctorByDoctorId(id);
+    return this.f0Service.findAllOfDoctor(id);
   }
 
   @Post(':id/f0s')

@@ -43,13 +43,13 @@ export class VolunteerController {
   @UseGuards(JwtAuthGuard)
   @Get('me/f0s')
   getMyF0s(@Request() req: RequestWithUser) {
-    const { id } = req.user;
-    return this.f0Service.findAllOfVolunteerByUserId(id);
+    const { volunteerId } = req.user;
+    return this.f0Service.findAllOfVolunteer(volunteerId);
   }
 
   @Get(':id/f0s')
   getVolunteerF0s(@Param('id') id: number) {
-    return this.f0Service.findAllOfVolunteerByVolunteerId(id);
+    return this.f0Service.findAllOfVolunteer(id);
   }
 
   @UseGuards(JwtAuthGuard)
