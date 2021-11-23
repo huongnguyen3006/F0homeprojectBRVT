@@ -43,7 +43,7 @@ export class VolunteerService {
   }
 
   async addF0(volunteerId: number, createF0Dto: CreateF0Dto) {
-    const volunteer = await this.findOneByUserId(volunteerId);
+    const volunteer = await this.findOneOrFail(volunteerId);
     createF0Dto.volunteer = volunteer;
     return await this.f0Service.create(createF0Dto);
   }

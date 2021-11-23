@@ -9,7 +9,7 @@ import { SendVerificationEmailDto } from './dto/send-verificaiton-email.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import RequestWithUser from './interfaces/request-with-user';
+import { RequestWithUser } from './interfaces/request-with-user';
 
 @ApiTags('auth')
 @Controller('auth')

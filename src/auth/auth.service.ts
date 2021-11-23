@@ -19,7 +19,7 @@ import { SendVerificationEmailDto } from './dto/send-verificaiton-email.dto';
 import { SignEmailTokenDto } from './dto/sign-email-token.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { EmailPayload } from './interfaces/email-payload';
-import { JwtPayload } from './interfaces/jwt-payload';
+import { UserPayload } from './interfaces/user-payload';
 
 @Injectable()
 export class AuthService {
@@ -47,15 +47,15 @@ export class AuthService {
     return user;
   }
 
-  async login(user: JwtPayload) {
-    const { id, email, role } = user;
-    const payload: JwtPayload = { id, email, role };
+  async login(user: UserPayload) {
+    const { userId, email, role } = user;
+    const payload: UserPayload = { userId, email, role };
     // Add role id to payload
     if (role === 'doctor')
-      payload.doctorId = (await this.doctorService.findOneByUserId(id)).id;
+      payload.doctorId = (await this.doctorService.findOneByUserId(userId)).id;
     else if (role === 'volunteer')
       payload.volunteerId = (
-        await this.volunteerService.findOneByUserId(id)
+        await this.volunteerService.findOneByUserId(userId)
       ).id;
 
     const accessToken = this.jwtService.sign(payload);

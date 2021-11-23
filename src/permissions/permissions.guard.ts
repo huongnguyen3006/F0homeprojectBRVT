@@ -1,7 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtPayload } from 'src/auth/interfaces/jwt-payload';
-import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { RequestWithUser } from 'src/auth/interfaces/request-with-user';
 import { IS_PUBLIC_KEY } from 'src/common/decorators/public.decorator';
 import { Permission } from './permission.enum';
 import { REQUIRE_PERMISSIONS_KEY } from './require-permissions.decorator';

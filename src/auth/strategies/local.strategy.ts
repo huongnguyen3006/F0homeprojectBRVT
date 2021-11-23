@@ -19,6 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException('Email and password do not match');
     }
-    return user;
+    const { id: userId } = user;
+    return { ...user, userId };
   }
 }

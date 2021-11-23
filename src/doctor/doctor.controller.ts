@@ -6,16 +6,19 @@ import {
   Param,
   Patch,
   Post,
-  Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import RequestWithUser from 'src/auth/interfaces/request-with-user';
+import { UserPayload } from 'src/auth/interfaces/user-payload';
+import { Admin } from 'src/common/decorators/admin.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
+import { RequestUser } from 'src/common/decorators/request-user.decorator';
 import { F0Service } from 'src/f0/f0.service';
 import { Permission } from 'src/permissions/permission.enum';
 import { RequirePermissions } from 'src/permissions/require-permissions.decorator';
 import { DoctorService } from './doctor.service';
 import { AssignF0sDto } from './dto/assign-f0s.dto';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
+import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @ApiTags('doctors')
 @Controller('doctors')
@@ -25,25 +28,37 @@ export class DoctorController {
     private readonly f0Service: F0Service,
   ) {}
 
+  @Admin()
   @Get()
   findAll() {
     return this.doctorService.findAll();
   }
 
+  @Admin()
   @Get(':id')
   get(@Param('id') id: number) {
     return this.doctorService.findOne(id);
   }
 
-  @Get('me/f0s')
-  getMyF0s(@Request() req: RequestWithUser) {
-    const { doctorId } = req.user;
-    return this.f0Service.findAllOfDoctor(doctorId);
-  }
-
+  @Admin()
   @Get(':id/f0s')
   getDoctorF0s(@Param('id') id: number) {
     return this.f0Service.findAllOfDoctor(id);
+  }
+
+  @Get('me/f0s')
+  getMyF0s(@RequestUser() user: UserPayload) {
+    const { doctorId } = user;
+    return this.f0Service.findAllOfDoctor(doctorId);
+  }
+
+  @Patch('me')
+  update(
+    @RequestUser() user: UserPayload,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
+    const { doctorId } = user;
+    return this.doctorService.update(doctorId, updateDoctorDto);
   }
 
   @Post(':id/f0s')
@@ -51,6 +66,7 @@ export class DoctorController {
     return this.doctorService.assignF0s(id, assignF0sDto);
   }
 
+  @Public()
   @Post()
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);

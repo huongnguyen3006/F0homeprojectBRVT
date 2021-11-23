@@ -1,22 +1,14 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Request,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import RequestWithUser from 'src/auth/interfaces/request-with-user';
-import { Permission } from 'src/permissions/permission.enum';
-import { RequirePermissions } from 'src/permissions/require-permissions.decorator';
+import { UserPayload } from 'src/auth/interfaces/user-payload';
+import { Admin } from 'src/common/decorators/admin.decorator';
+import { RequestUser } from 'src/common/decorators/request-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
 @Controller('users')
-@RequirePermissions(Permission.ADMIN)
+@Admin()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -26,10 +18,10 @@ export class UserController {
   }
 
   @Get('me')
-  getLoginUser(@Request() req: RequestWithUser) {
-    const { id } = req.user;
-    console.log(req.user);
-    return this.userService.findOneOrFail(id);
+  getLoginUser(@RequestUser() user: UserPayload) {
+    const { userId } = user;
+    console.log(user);
+    return this.userService.findOneOrFail(userId);
   }
 
   @Get(':id')

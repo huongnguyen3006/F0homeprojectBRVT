@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Admin } from 'src/common/decorators/admin.decorator';
 import { TestResultService } from './test-result.service';
 
 @ApiTags('test-results')
@@ -7,6 +8,7 @@ import { TestResultService } from './test-result.service';
 export class TestResultController {
   constructor(private readonly testResultService: TestResultService) {}
 
+  @Admin()
   @Get()
   findAll() {
     return this.testResultService.findAll();

@@ -1,7 +1,7 @@
 import { UserRole } from 'src/user/user.entity';
 
-export interface JwtPayload {
-  id: number;
+export interface UserPayload {
+  userId: number;
   email: string;
   role: UserRole;
   doctorId?: number;

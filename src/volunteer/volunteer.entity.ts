@@ -36,3 +36,5 @@ export class Volunteer {
   @OneToMany(() => F0, (f0) => f0.volunteer, { onDelete: 'SET NULL' })
   f0s: F0[];
 }
+
+export class VolunteerSubject {}
